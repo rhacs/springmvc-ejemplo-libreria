@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
 import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 import io.github.rhacs.libreria.modelos.Categoria;
 import io.github.rhacs.libreria.modelos.ErrorResponse;
@@ -132,6 +133,50 @@ public class CategoriaRestController {
 
         // Devolver objeto creado
         return categoria;
+    }
+
+    // Solicitudes PUT
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Edita la información de una {@link Categoria}
+     * 
+     * @param id        identificador numérico de la {@link Categoria}
+     * @param categoria objeto {@link Categoria} que contiene la información para
+     *                  editar
+     * @return un objeto {@link Categoria} con la respuesta a la solicitud
+     */
+    @PutMapping(path = "/{id:^[0-9]+$}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Categoria editarRegistro(@PathVariable Long id, @Valid Categoria categoria) {
+        // Verificar si el id del path y de la categoria coinciden
+        if (id.equals(categoria.getId())) {
+            // Buscar información de la categoría por nombre
+            Optional<Categoria> existente = categoriasRepositorio.findByNombre(categoria.getNombre());
+
+            // Verificar si existe y si los identificadores son distintos
+            if (existente.isPresent() && existente.get().getId() != categoria.getId()) {
+                // Preparar respuesta
+                ErrorResponse response = prepararError("nombre", "El nombre está en uso", "Categoria",
+                        categoria.getNombre(), HttpStatus.CONFLICT);
+
+                // Lanzar excepción
+                throw new ViolacionRestriccionUnicaException(response);
+            }
+
+            // Guardar cambios
+            categoria = categoriasRepositorio.save(categoria);
+
+            // Devolver objeto
+            return categoria;
+        }
+
+        // Preparar respuesta
+        ErrorResponse response = prepararError("id", "Los identificadores no coinciden", "Categoria",
+                new Object[] { id, categoria.getId() }, HttpStatus.BAD_REQUEST);
+
+        // Lanzar excepción
+        throw new InconsistenciaParametrosException(response);
     }
 
 }
