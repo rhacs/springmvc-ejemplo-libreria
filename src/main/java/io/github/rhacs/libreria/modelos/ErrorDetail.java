@@ -32,13 +32,6 @@ public class ErrorDetail {
     // -----------------------------------------------------------------------------------------
 
     /**
-     * Crea una nueva instancia vacía del objeto {@link ErrorDetail}
-     */
-    public ErrorDetail() {
-
-    }
-
-    /**
      * Crea una nueva instancia del objeto {@link ErrorDetail}
      * 
      * @param field   nombre del atributo del objeto afectado
