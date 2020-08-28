@@ -15,3 +15,19 @@ CREATE TABLE lib_autores (
 
 -- Secuencia
 CREATE SEQUENCE lib_autores_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
+
+----------------------------------------------------------------------------------------------------
+-- Tabla: lib_publicadores
+----------------------------------------------------------------------------------------------------
+
+-- Tabla
+CREATE TABLE lib_publicadores (
+    publicador_id NUMBER NOT NULL,
+    nombre NVARCHAR2(150) NOT NULL,
+
+    -- Llave primaria
+    CONSTRAINT lib_publicadores_pk PRIMARY KEY (publicador_id)
+);
+
+-- Secuencia
+CREATE SEQUENCE lib_publicadores_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
