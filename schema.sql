@@ -53,3 +53,38 @@ CREATE TABLE lib_categorias (
 
 -- Secuencia
 CREATE SEQUENCE lib_categorias_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
+
+----------------------------------------------------------------------------------------------------
+-- Tabla: lib_libros
+----------------------------------------------------------------------------------------------------
+
+-- Tabla
+CREATE TABLE lib_libros (
+    libro_id NUMBER NOT NULL,
+    titulo NVARCHAR2(100) NOT NULL,
+    titulo_original NVARCHAR2(100) NOT NULL,
+    subtitulo NVARCHAR2(100) DEFAULT NULL,
+    idioma NVARCHAR2(50) NOT NULL,
+    idioma_original NVARCHAR2(50) DEFAULT NULL,
+    resumen NVARCHAR2(250) NOT NULL,
+    fecha_publicacion DATE NOT NULL,
+    isbn10 NVARCHAR2(10) NOT NULL,
+    isbn13 NVARCHAR2(13) NOT NULL,
+    portada NVARCHAR2(150) NOT NULL,
+    autor_id NUMBER NOT NULL,
+    publicador_id NUMBER NOT NULL,
+
+    -- Llave primaria
+    CONSTRAINT lib_libros_pk PRIMARY KEY (libro_id),
+
+    -- Llaves foráneas
+    CONSTRAINT lib_libros_autor FOREIGN KEY (autor_id) REFERENCES lib_autores (autor_id),
+    CONSTRAINT lib_libros_publicador FOREIGN KEY (publicador_id) REFERENCES lib_publicadores (publicador_id),
+
+    -- Columnas únicas
+    CONSTRAINT lib_libros_i10 UNIQUE (isbn10),
+    CONSTRAINT lib_libros_i13 UNIQUE (isbn13)
+);
+
+-- Secuencia
+CREATE SEQUENCE lib_libros_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
