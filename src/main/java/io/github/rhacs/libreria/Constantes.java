@@ -18,7 +18,7 @@ public class Constantes {
      * Nombre de la secuencia encargada de generar los valores para la llave
      * primaria de la tabla {@value #TABLA_AUTORES}
      */
-    public static final String SECUENCIA_AUTORES = "lib_autores";
+    public static final String SECUENCIA_AUTORES = TABLA_AUTORES + "_seq";
 
     // Llaves Primarias
     // -----------------------------------------------------------------------------------------
