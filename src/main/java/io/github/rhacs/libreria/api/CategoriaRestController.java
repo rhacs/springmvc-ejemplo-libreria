@@ -1,5 +1,6 @@
 package io.github.rhacs.libreria.api;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -27,6 +28,18 @@ public class CategoriaRestController {
 
     // Solicitudes GET
     // -----------------------------------------------------------------------------------------
+
+    /**
+     * Muestra el listado de {@link Categoria}s disponibles en el repositorio
+     * 
+     * @return un objeto {@link List} con la respuesta a la solicitud
+     */
+    @GetMapping
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<Categoria> mostrarTodas() {
+        // Buscar y devolver todas las categorías
+        return categoriasRepositorio.findAll();
+    }
 
     /**
      * Muestra los detalles de una {@link Categoria}
