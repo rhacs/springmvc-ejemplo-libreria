@@ -82,7 +82,7 @@ public class CategoriaRestController {
      * @param id identificador numérico de la {@link Categoria}
      * @return un objeto {@link Categoria} con la respuesta a la solicitud
      */
-    @GetMapping(path = "/{id:^[0-9]+")
+    @GetMapping(path = "/{id:^[0-9]+$}")
     @ResponseStatus(code = HttpStatus.OK)
     public Categoria mostrarUna(@PathVariable Long id) {
         // Buscar información de la categoría
