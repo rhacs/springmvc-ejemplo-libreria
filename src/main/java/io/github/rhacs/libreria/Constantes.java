@@ -29,6 +29,12 @@ public class Constantes {
      */
     public static final String TABLA_LIBROS = "lib_libros";
 
+    /**
+     * Nombre de la tabla que contiene los registros que relacionan las tablas
+     * {@value #TABLA_LIBROS} y {@val #TABLA_CATEGORIAS}
+     */
+    public static final String TABLA_LIBROS_CATEGORIAS = "lib_libros_categorias";
+
     // Secuencias
     // -----------------------------------------------------------------------------------------
 
