@@ -11,6 +11,13 @@ import io.github.rhacs.libreria.modelos.ErrorResponse;
 @RestControllerAdvice(basePackages = "io.github.rhacs.libreria.api")
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+    /**
+     * Maneja las excepciones {@link ElementoNoExisteException}
+     * 
+     * @param e objeto {@link ElementoNoExisteException} que contiene la información
+     *          del error
+     * @return un objeto {@link ResponseEntity} con la respuesta a la solicitud
+     */
     @ExceptionHandler(value = { ElementoNoExisteException.class })
     protected ResponseEntity<ErrorResponse> handleElementoNoExiste(ElementoNoExisteException e) {
         return ResponseEntity.status(e.getErrorResponse().getStatusCode()).body(e.getErrorResponse());
