@@ -17,6 +17,12 @@ public class Constantes {
      */
     public static final String TABLA_PUBLICADORES = "lib_publicadores";
 
+    /**
+     * Nombre de la tabla que contiene los registros para el repositorio de
+     * {@link Categoria}s
+     */
+    public static final String TABLA_CATEGORIAS = "lib_categorias";
+
     // Secuencias
     // -----------------------------------------------------------------------------------------
 
@@ -32,6 +38,12 @@ public class Constantes {
      */
     public static final String SECUENCIA_PUBLICADORES = TABLA_PUBLICADORES + "_seq";
 
+    /**
+     * Nombre de la secuencia encargada de generar los valores para la llave
+     * primaria de la tabla {@value #TABLA_CATEGORIAS}
+     */
+    public static final String SECUENCIA_CATEGORIAS = TABLA_CATEGORIAS + "_seq";
+
     // Llaves Primarias
     // -----------------------------------------------------------------------------------------
 
@@ -44,6 +56,11 @@ public class Constantes {
      * Nombre de la llave primaria para la tabla {@value #TABLA_PUBLICADORES}
      */
     public static final String PUBLICADORES_ID = "publicador_id";
+
+    /**
+     * Nombre de la llave primaria para la tabla {@value #TABLA_CATEGORIAS}
+     */
+    public static final String CATEGORIAS_ID = "categoria_id";
 
     // Constructores
     // -----------------------------------------------------------------------------------------
