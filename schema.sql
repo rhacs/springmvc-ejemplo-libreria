@@ -62,14 +62,14 @@ CREATE SEQUENCE lib_categorias_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE O
 CREATE TABLE lib_libros (
     libro_id NUMBER NOT NULL,
     titulo NVARCHAR2(100) NOT NULL,
-    titulo_original NVARCHAR2(100) NOT NULL,
+    titulo_original NVARCHAR2(100) DEFAULT NULL,
     subtitulo NVARCHAR2(100) DEFAULT NULL,
     idioma NVARCHAR2(50) NOT NULL,
     idioma_original NVARCHAR2(50) DEFAULT NULL,
-    resumen NVARCHAR2(250) NOT NULL,
+    resumen NVARCHAR2(1000) NOT NULL,
     fecha_publicacion DATE NOT NULL,
-    isbn10 NVARCHAR2(10) NOT NULL,
-    isbn13 NVARCHAR2(13) NOT NULL,
+    isbn10 NVARCHAR2(10) DEFAULT NULL,
+    isbn13 NVARCHAR2(13) DEFAULT NULL,
     portada NVARCHAR2(150) NOT NULL,
     autor_id NUMBER NOT NULL,
     publicador_id NUMBER NOT NULL,
@@ -88,3 +88,23 @@ CREATE TABLE lib_libros (
 
 -- Secuencia
 CREATE SEQUENCE lib_libros_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
+
+----------------------------------------------------------------------------------------------------
+-- Tabla: lib_libros_categorias
+----------------------------------------------------------------------------------------------------
+
+-- Tabla
+CREATE TABLE lib_libros_categorias (
+    libro_id NUMBER NOT NULL,
+    categoria_id NUMBER NOT NULL,
+
+    -- Llaves primarias
+    CONSTRAINT lib_libros_categorias_pk PRIMARY KEY (libro_id, categoria_id),
+
+    -- Llaves foráneas
+    CONSTRAINT lib_libcat_libros FOREIGN KEY (libro_id) REFERENCES lib_libros (libro_id),
+    CONSTRAINT lib_libcat_categorias FOREIGN KEY (categoria_id) REFERENCES lib_categorias (categoria_id),
+
+    -- Columnas únicas
+    CONSTRAINT lib_libros_categorias_uq UNIQUE (libro_id, categoria_id)
+);
