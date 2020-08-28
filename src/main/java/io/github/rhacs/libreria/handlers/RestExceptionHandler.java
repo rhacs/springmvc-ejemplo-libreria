@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
 import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 import io.github.rhacs.libreria.modelos.ErrorResponse;
 
@@ -33,6 +34,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(value = { ViolacionRestriccionUnicaException.class })
     protected ResponseEntity<ErrorResponse> handleViolacionRestriccionUnica(ViolacionRestriccionUnicaException e) {
+        return ResponseEntity.status(e.getResponse().getStatusCode()).body(e.getResponse());
+    }
+
+    /**
+     * Maneja las excepciones {@link InconsistenciaParametrosException}
+     * 
+     * @param e objeto {@link InconsistenciaParametrosException} que contiene la
+     *          información de la excepción
+     * @return un objeto {@link ResponseEntity} con la respuesta a la solicitud
+     */
+    @ExceptionHandler(value = { InconsistenciaParametrosException.class })
+    protected ResponseEntity<ErrorResponse> handleInconsistenciaParametros(InconsistenciaParametrosException e) {
         return ResponseEntity.status(e.getResponse().getStatusCode()).body(e.getResponse());
     }
 
