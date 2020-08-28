@@ -24,11 +24,15 @@ import org.hibernate.validator.constraints.ISBN;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import io.github.rhacs.libreria.Constantes;
 
 @Entity
 @Table(name = Constantes.TABLA_LIBROS)
 @SequenceGenerator(name = Constantes.SECUENCIA_LIBROS, sequenceName = Constantes.SECUENCIA_LIBROS)
+@JsonInclude(content = JsonInclude.Include.NON_EMPTY, value = JsonInclude.Include.NON_EMPTY)
 public class Libro {
 
     // Atributos
@@ -88,6 +92,7 @@ public class Libro {
      */
     @NotNull
     @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(pattern = "yyyy/MM/dd", shape = JsonFormat.Shape.STRING)
     @Column(name = Constantes.LIBROS_FECHA_PUBLICACION)
     private LocalDate fechaPublicacion;
 
