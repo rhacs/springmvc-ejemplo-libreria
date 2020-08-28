@@ -103,8 +103,5 @@ CREATE TABLE lib_libros_categorias (
 
     -- Llaves foráneas
     CONSTRAINT lib_libcat_libros FOREIGN KEY (libro_id) REFERENCES lib_libros (libro_id),
-    CONSTRAINT lib_libcat_categorias FOREIGN KEY (categoria_id) REFERENCES lib_categorias (categoria_id),
-
-    -- Columnas únicas
-    CONSTRAINT lib_libros_categorias_uq UNIQUE (libro_id, categoria_id)
+    CONSTRAINT lib_libcat_categorias FOREIGN KEY (categoria_id) REFERENCES lib_categorias (categoria_id)
 );
