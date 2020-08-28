@@ -11,11 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 import io.github.rhacs.libreria.modelos.Categoria;
 import io.github.rhacs.libreria.modelos.ErrorResponse;
 import io.github.rhacs.libreria.repositorios.CategoriasRepositorio;
@@ -117,10 +119,12 @@ public class CategoriaRestController {
 
         // Verificar si existe
         if (existente.isPresent()) {
+            // Preparar respuesta
+            ErrorResponse response = prepararError("nombre", "El nombre está en uso", "Categoria",
+                    categoria.getNombre(), HttpStatus.CONFLICT);
+
             // Lanzar excepción
-            throw new RuntimeException(String.format(
-                    "El nombre '%s' para la Categoría ya está siendo utilizado por un registro en el repositorio",
-                    categoria.getNombre()));
+            throw new ViolacionRestriccionUnicaException(response);
         }
 
         // Guardar categoria
