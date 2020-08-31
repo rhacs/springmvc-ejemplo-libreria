@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -115,7 +116,7 @@ public class CategoriaRestController {
      */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Categoria agregarRegistro(@Valid Categoria categoria) {
+    public Categoria agregarRegistro(@RequestBody @Valid Categoria categoria) {
         // Buscar información de la categoría por el nombre ingresado
         Optional<Categoria> existente = categoriasRepositorio.findByNombre(categoria.getNombre());
 
@@ -149,7 +150,7 @@ public class CategoriaRestController {
      */
     @PutMapping(path = "/{id:^[0-9]+$}")
     @ResponseStatus(code = HttpStatus.OK)
-    public Categoria editarRegistro(@PathVariable Long id, @Valid Categoria categoria) {
+    public Categoria editarRegistro(@PathVariable Long id, @RequestBody @Valid Categoria categoria) {
         // Verificar si el id del path y de la categoria coinciden
         if (id.equals(categoria.getId())) {
             // Buscar información de la categoría por nombre
