@@ -82,8 +82,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     /**
      * Maneja las excepciones de validación {@link MethodArgumentNotValidException}
      * 
-     * @param e objeto {@link MethodNotValidException} que contiene la información
-     *          de la excepción
+     * @param e       objeto {@link MethodArgumentNotValidException} que contiene la
+     *                información de la excepción
+     * @param headers objeto {@link HttpHeaders} que contiene la información de la
+     *                cabecera de la solicitud/respuesta
+     * @param status  objeto {@link HttpStatus} que representa el código de estado
+     *                http a entregarle al cliente
+     * @param request objeto {@link WebRequest} que contiene la información de la
+     *                solicitud que le hace el cliente al servlet
      * @return un objeto {@link ResponseEntity} que contiene la respuesta a la
      *         solicitud
      */
