@@ -16,7 +16,7 @@ import io.github.rhacs.libreria.Constantes;
 
 @Entity
 @Table(name = Constantes.TABLA_PUBLICADORES)
-@SequenceGenerator(name = Constantes.SECUENCIA_PUBLICADORES, sequenceName = Constantes.SECUENCIA_PUBLICADORES)
+@SequenceGenerator(allocationSize = 1, initialValue = 1, name = Constantes.SECUENCIA_PUBLICADORES, sequenceName = Constantes.SECUENCIA_PUBLICADORES)
 public class Publicador {
 
     // Atributos

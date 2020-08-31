@@ -31,7 +31,7 @@ import io.github.rhacs.libreria.Constantes;
 
 @Entity
 @Table(name = Constantes.TABLA_LIBROS)
-@SequenceGenerator(name = Constantes.SECUENCIA_LIBROS, sequenceName = Constantes.SECUENCIA_LIBROS)
+@SequenceGenerator(allocationSize = 1, initialValue = 1, name = Constantes.SECUENCIA_LIBROS, sequenceName = Constantes.SECUENCIA_LIBROS)
 @JsonInclude(content = JsonInclude.Include.NON_EMPTY, value = JsonInclude.Include.NON_EMPTY)
 public class Libro {
 

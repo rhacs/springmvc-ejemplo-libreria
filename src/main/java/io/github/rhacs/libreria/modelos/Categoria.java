@@ -16,7 +16,7 @@ import io.github.rhacs.libreria.Constantes;
 
 @Entity
 @Table(name = Constantes.TABLA_CATEGORIAS)
-@SequenceGenerator(name = Constantes.SECUENCIA_CATEGORIAS, sequenceName = Constantes.SECUENCIA_CATEGORIAS)
+@SequenceGenerator(allocationSize = 1, initialValue = 1, name = Constantes.SECUENCIA_CATEGORIAS, sequenceName = Constantes.SECUENCIA_CATEGORIAS)
 public class Categoria {
 
     // Atributos

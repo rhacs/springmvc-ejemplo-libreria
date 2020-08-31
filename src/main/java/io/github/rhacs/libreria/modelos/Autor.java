@@ -16,7 +16,7 @@ import io.github.rhacs.libreria.Constantes;
 
 @Entity
 @Table(name = Constantes.TABLA_AUTORES)
-@SequenceGenerator(name = Constantes.SECUENCIA_AUTORES, sequenceName = Constantes.SECUENCIA_AUTORES)
+@SequenceGenerator(allocationSize = 1, initialValue = 1, name = Constantes.SECUENCIA_AUTORES, sequenceName = Constantes.SECUENCIA_AUTORES)
 public class Autor {
 
     // Atributos
