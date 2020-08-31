@@ -138,7 +138,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse response = new ErrorResponse(s.value(), "Excepción de vinculación");
 
         // Agregar errores de vinculación al listado
-        e.getAllErrors().forEach(response::agregarError);
+        e.getBindingResult().getFieldErrors().forEach(response::agregarError);
+        e.getBindingResult().getGlobalErrors().forEach(response::agregarError);
 
         // Devolver objeto
         return ResponseEntity.status(s).body(response);
