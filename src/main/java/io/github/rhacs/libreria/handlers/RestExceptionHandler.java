@@ -5,6 +5,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -112,6 +113,35 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
         // Devolver respuesta
         return ResponseEntity.status(st).body(response);
+    }
+
+    /**
+     * Maneja las excepciones de vinculación {@link BindException}
+     * 
+     * @param e       objeto {@link BindException} que contiene la información de la
+     *                excepción
+     * @param headers objeto {@link HttpHeaders} que contiene la información de las
+     *                cabeceras de la solicitud/respuesta
+     * @param status  objeto {@link HttpStatus} que representa el código de estado
+     *                http
+     * @param request objeto {@link WebRequest} que contiene la información de la
+     *                solicitud que le envía el cliente al servlet
+     * @return un objeto {@link ResponseEntity} con la respuesta a la solicitud
+     */
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException e, HttpHeaders headers, HttpStatus status,
+            WebRequest request) {
+        // Estado
+        HttpStatus s = HttpStatus.BAD_REQUEST;
+
+        // Preparar respuesta
+        ErrorResponse response = new ErrorResponse(s.value(), "Excepción de vinculación");
+
+        // Agregar errores de vinculación al listado
+        e.getAllErrors().forEach(response::agregarError);
+
+        // Devolver objeto
+        return ResponseEntity.status(s).body(response);
     }
 
 }
