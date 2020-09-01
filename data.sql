@@ -1,0 +1,26 @@
+-- Tabla: lib_categorias
+INSERT INTO lib_categorias values (1, 'Acción y Aventura');
+INSERT INTO lib_categorias values (2, 'Antología');
+INSERT INTO lib_categorias values (3, 'Infantil');
+INSERT INTO lib_categorias values (4, 'Clasico');
+INSERT INTO lib_categorias values (5, 'Comic');
+INSERT INTO lib_categorias values (6, 'Crimen');
+INSERT INTO lib_categorias values (7, 'Drama');
+INSERT INTO lib_categorias values (8, 'Cuento de hadas');
+INSERT INTO lib_categorias values (9, 'Fantasía');
+INSERT INTO lib_categorias values (10, 'Novela Gráfica');
+INSERT INTO lib_categorias values (11, 'Ficción');
+INSERT INTO lib_categorias values (12, 'Horror');
+INSERT INTO lib_categorias values (13, 'Misterio');
+INSERT INTO lib_categorias values (14, 'Romance Sobrenatural');
+INSERT INTO lib_categorias values (15, 'Libro Ilustrado');
+INSERT INTO lib_categorias values (16, 'Poesía');
+INSERT INTO lib_categorias values (17, 'Suspenso');
+INSERT INTO lib_categorias values (18, 'Romance');
+INSERT INTO lib_categorias values (19, 'Sátira');
+INSERT INTO lib_categorias values (20, 'Ciencia Ficción');
+INSERT INTO lib_categorias values (21, 'Cuento');
+INSERT INTO lib_categorias values (22, 'Folclore');
+INSERT INTO lib_categorias values (23, 'Humor');
+INSERT INTO lib_categorias values (24, 'Leyenda');
+INSERT INTO lib_categorias values (25, 'Mitología');
