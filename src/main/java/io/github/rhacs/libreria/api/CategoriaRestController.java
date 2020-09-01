@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,7 +78,7 @@ public class CategoriaRestController {
     @ResponseStatus(code = HttpStatus.OK)
     public List<Categoria> mostrarTodas() {
         // Buscar y devolver todas las categorías
-        return categoriasRepositorio.findAll();
+        return categoriasRepositorio.findAll(Sort.by(Order.asc("id")));
     }
 
     /**
