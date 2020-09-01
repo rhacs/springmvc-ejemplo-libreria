@@ -52,7 +52,7 @@ CREATE TABLE lib_categorias (
 );
 
 -- Secuencia
-CREATE SEQUENCE lib_categorias_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
+CREATE SEQUENCE lib_categorias_seq INCREMENT BY 1 START WITH 26 NOCACHE ORDER NOCYCLE;
 
 ----------------------------------------------------------------------------------------------------
 -- Tabla: lib_libros
