@@ -34,6 +34,10 @@ public class CategoriaRestController {
     // Atributos
     // -----------------------------------------------------------------------------------------
 
+    /**
+     * Objeto {@link CategoriasRepositorio} que contiene los métodos de consulta y
+     * manipulación para el repositorio de {@link Categoria}s
+     */
     @Autowired
     private CategoriasRepositorio categoriasRepositorio;
 
