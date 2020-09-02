@@ -12,12 +12,12 @@
             <div class="row">
                 <!-- Menú Lateral -->
                 <div class="col-md-4">
-                    <h4 class="border-bottom pb-2 mb-4">Categorías</h4>
+                    <h5 class="border-bottom pb-2 mb-4">Categorías</h5>
 
                     <!-- Listado de Categorías -->
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group">
                     <core:forEach items="${categorias}" var="cat">
-                        <li class="list-group-item">${cat.nombre}</li>
+                        <li class="list-group-item list-group-item-action">${cat.nombre}</li>
                     </core:forEach>
                     </ul>
                 </div>
