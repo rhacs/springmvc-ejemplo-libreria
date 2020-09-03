@@ -28,6 +28,9 @@ import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 @WebAppConfiguration
 class CategoriaRestControllerTest {
 
+    private static final String API_CATEGORIAS = "/api/categorias";
+    private static final String API_CATEGORIAS_ID = "/api/categorias/{id}";
+
     private MockMvc mvc;
 
     @BeforeEach
@@ -42,7 +45,7 @@ class CategoriaRestControllerTest {
     void mostrarTodasDeberiaDevolverUnaLista() throws Exception {
         mvc
                 // Realizar petición get a la API para obtener el listado de categorías
-                .perform(get("/api/categorias"))
+                .perform(get(API_CATEGORIAS))
                 // Esperar que la cabecera de la respuesta tenga un atributo "Content-Type" con
                 // el valor "application/json"
                 .andExpect(header().string("Content-Type", "application/json"))
@@ -68,7 +71,7 @@ class CategoriaRestControllerTest {
     void mostrarUnaDeberiaDevolverUnaCategoria() throws Exception {
         mvc
                 // Realizar petición GET a la API para obtener un registro en particular
-                .perform(get("/api/categorias/{id}", 20))
+                .perform(get(API_CATEGORIAS_ID, 20))
                 // Esperar que el estado de la respuesta sea 200 (OK)
                 .andExpect(status().isOk())
                 // Esperar que el tipo de contenido de la respuesta sea "application/json"
@@ -85,7 +88,7 @@ class CategoriaRestControllerTest {
     void mostrarUnaDeberiaArrojarError() throws Exception {
         mvc
                 // Realizar petición GET a la API para obtener un registro en particular
-                .perform(get("/api/categorias/{id}", 500))
+                .perform(get(API_CATEGORIAS_ID, 500))
                 // Esperar que el estado de la respuesta sea 404 (NOT_FOUND)
                 .andExpect(status().isNotFound())
                 // Esperar que la excepción lanzada sea ElementoNoExisteException
@@ -109,7 +112,7 @@ class CategoriaRestControllerTest {
 
         mvc
                 // Realizar petición POST a la API
-                .perform(post("/api/categorias")
+                .perform(post(API_CATEGORIAS)
                         // Establecer tipo de contenido
                         .contentType(MediaType.APPLICATION_JSON)
                         // Agregar cuerpo a la solicitud
@@ -132,7 +135,7 @@ class CategoriaRestControllerTest {
 
         mvc
                 // Realizar petición POST a la API, con nombre en uso
-                .perform(post("/api/categorias")
+                .perform(post(API_CATEGORIAS)
                         // Establecer el tipo de contenido para la solicitud
                         .contentType(MediaType.APPLICATION_JSON)
                         // Establecer el cuerpo de la solicitud
@@ -153,7 +156,7 @@ class CategoriaRestControllerTest {
     void agregarRegistroDeberiaLanzarBadRequest() throws Exception {
         mvc
                 // Realizar petición POST a la API con cuerpo vacío
-                .perform(post("/api/categorias")
+                .perform(post(API_CATEGORIAS)
                         // Establecer tipo de contenido
                         .contentType(MediaType.APPLICATION_JSON))
                 // Esperar que el estado de la respuesta sea 400 (BAD_REQUEST)
@@ -171,7 +174,7 @@ class CategoriaRestControllerTest {
 
         mvc
                 // Realizar petición PUT a la API
-                .perform(put("/api/categorias/{id}", 21)
+                .perform(put(API_CATEGORIAS_ID, 21)
                         // Establecer el tipo de contenido de la solicitud
                         .contentType(MediaType.APPLICATION_JSON)
                         // Establecer el contenido de la solicitud
@@ -193,7 +196,7 @@ class CategoriaRestControllerTest {
 
         mvc
                 // Realizar petición PUT a la API
-                .perform(put("/api/categorias/{id}", 21)
+                .perform(put(API_CATEGORIAS_ID, 21)
                         // Establecer tipo de contenido de la solicitud
                         .contentType(MediaType.APPLICATION_JSON)
                         // Establecer contenido de la solicitud
@@ -217,7 +220,7 @@ class CategoriaRestControllerTest {
 
         mvc
                 // Realizar petición PUT a la API
-                .perform(put("/api/categorias/{id}", 1)
+                .perform(put(API_CATEGORIAS_ID, 1)
                         // Establecer tipo de contenido
                         .contentType(MediaType.APPLICATION_JSON)
                         // Establecer contenido
@@ -242,7 +245,7 @@ class CategoriaRestControllerTest {
     void eliminarRegistroDeberiaDevolverNoContent() throws Exception {
         mvc
                 // Realizar petición DELETE a la API para eliminar el registro con id 17
-                .perform(delete("/api/categorias/{id}", 17))
+                .perform(delete(API_CATEGORIAS_ID, 17))
                 // Esperar que el estado de la respuesta sea 204
                 .andExpect(status().isNoContent())
                 // Imprimir por consola
@@ -253,7 +256,7 @@ class CategoriaRestControllerTest {
     void eliminarRegistroDeberiaLanzarElementoNoExiste() throws Exception {
         mvc
                 // Realizar petición DELETE a la API
-                .perform(delete("/api/categorias/{id}", 1000))
+                .perform(delete(API_CATEGORIAS_ID, 1000))
                 // Esperar que el estado de la respuesta sea 400 (NOT_FOUND)
                 .andExpect(status().isNotFound())
                 // Esperar que la excepción lanzada sea ElementoNoExisteException
