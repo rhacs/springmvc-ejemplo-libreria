@@ -56,6 +56,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(e.getResponse().getStatusCode()).body(e.getResponse());
     }
 
+    // Herencias (ResponseEntityExceptionHandler)
+    // -----------------------------------------------------------------------------------------
+
     /**
      * Maneja las excepciones de validación {@link ConstraintViolationException}
      * 
