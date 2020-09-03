@@ -151,14 +151,12 @@ class CategoriaRestControllerTest {
     @Test
     void agregarRegistroDeberiaLanzarBadRequest() throws Exception {
         mvc
-            // Realizar petición POST a la API con cuerpo vacío
-            .perform(
-                    post("/api/categorias")
-                    // Establecer tipo de contenido
-                    .contentType(MediaType.APPLICATION_JSON)
-            )
-            // Esperar que el estado de la respuesta sea 400 (BAD_REQUEST)
-            .andExpect(status().isBadRequest());
+                // Realizar petición POST a la API con cuerpo vacío
+                .perform(post("/api/categorias")
+                        // Establecer tipo de contenido
+                        .contentType(MediaType.APPLICATION_JSON))
+                // Esperar que el estado de la respuesta sea 400 (BAD_REQUEST)
+                .andExpect(status().isBadRequest());
     }
 
     // editarRegistro()
@@ -171,22 +169,44 @@ class CategoriaRestControllerTest {
         String json = "{\"id\":21,\"nombre\":\"Cuentitos\"}";
 
         mvc
-            // Realizar petición PUT a la API
-            .perform(
-                    put("/api/categorias/{id}", 21)
-                    // Establecer el tipo de contenido de la solicitud
-                    .contentType(MediaType.APPLICATION_JSON)
-                    // Establecer el contenido de la solicitud
-                    .content(json)
-            )
-            // Esperar que el estado de la respuesta sea 200 (OK)
-            .andExpect(status().isOk())
-            // Esperar que el tipo de contenido sea "application/json"
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            // Esperar que el json tenga un atributo "nombre" con el valor "Cuentitos"
-            .andExpect(jsonPath("$.nombre").value("Cuentitos"))
-            // Imprimir por consola
-            .andDo(print());
+                // Realizar petición PUT a la API
+                .perform(put("/api/categorias/{id}", 21)
+                        // Establecer el tipo de contenido de la solicitud
+                        .contentType(MediaType.APPLICATION_JSON)
+                        // Establecer el contenido de la solicitud
+                        .content(json))
+                // Esperar que el estado de la respuesta sea 200 (OK)
+                .andExpect(status().isOk())
+                // Esperar que el tipo de contenido sea "application/json"
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // Esperar que el json tenga un atributo "nombre" con el valor "Cuentitos"
+                .andExpect(jsonPath("$.nombre").value("Cuentitos"))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    @Test
+    void editarRegistroDeberiaLanzarViolacionRestriccionUnica() throws Exception {
+        // Nueva información
+        String json = "{\"id\":21,\"nombre\":\"Ficción\"}";
+
+        mvc
+                // Realizar petición PUT a la API
+                .perform(put("/api/categorias/{id}", 21)
+                        // Establecer tipo de contenido de la solicitud
+                        .contentType(MediaType.APPLICATION_JSON)
+                        // Establecer contenido de la solicitud
+                        .content(json))
+                // Esperar que el estado de la respuesta sea 409 (CONFLICT)
+                .andExpect(status().isConflict())
+                // Esperar que la excepción lanzada sea ViolacionRestriccionUnicaException
+                .andExpect(result -> assertTrue(
+                        result.getResolvedException() instanceof ViolacionRestriccionUnicaException))
+                // Esperar que el json de respuesta tenga un objeto "error" con un atributo
+                // "message" que tiene el valor "El nombre está en uso"
+                .andExpect(jsonPath("$.error.message").value("El nombre está en uso"))
+                // Imprimir por consola
+                .andDo(print());
     }
 
     // eliminarRegistro()
@@ -196,12 +216,12 @@ class CategoriaRestControllerTest {
     @Transactional
     void eliminarRegistroDeberiaDevolverNoContent() throws Exception {
         mvc
-            // Realizar petición DELETE a la API para eliminar el registro con id 17
-            .perform(delete("/api/categorias/{id}", 17))
-            // Esperar que el estado de la respuesta sea 204
-            .andExpect(status().isNoContent())
-            // Imprimir por consola
-            .andDo(print());
+                // Realizar petición DELETE a la API para eliminar el registro con id 17
+                .perform(delete("/api/categorias/{id}", 17))
+                // Esperar que el estado de la respuesta sea 204
+                .andExpect(status().isNoContent())
+                // Imprimir por consola
+                .andDo(print());
     }
 
 }
