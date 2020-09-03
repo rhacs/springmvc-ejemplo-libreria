@@ -1,6 +1,7 @@
 package io.github.rhacs.libreria.api;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -8,10 +9,14 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.modelos.ErrorResponse;
 import io.github.rhacs.libreria.modelos.Publicador;
 import io.github.rhacs.libreria.repositorios.PublicadoresRepositorio;
 
@@ -42,6 +47,33 @@ public class PublicadoresRestController {
     public List<Publicador> mostrarTodos() {
         // Obtener y devolver listado de publicadores
         return publicadoresRepositorio.findAll(Sort.by(Order.asc("id")));
+    }
+
+    /**
+     * Muestra el detalle del {@link Publicador} solicitado
+     * 
+     * @param id identificador numérico del {@link Publicador}
+     * @return un objeto {@link Publicador} que contiene la respuesta a la solicitud
+     */
+    @GetMapping(path = "/{id:^[0-9]+$}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public Publicador mostrarUno(@PathVariable Long id) {
+        // Buscar información del Publicador solicitado
+        Optional<Publicador> publicador = publicadoresRepositorio.findById(id);
+
+        // Verificar si existe
+        if (publicador.isPresent()) {
+            // Devolver objeto
+            return publicador.get();
+        }
+
+        // Preparar respuesta de error
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ErrorResponse response = new ErrorResponse(status.value(), "El elemento no existe");
+        response.agregarError("id", response.getMessage(), "Publicador", id);
+
+        // Lanzar excepción
+        throw new ElementoNoExisteException(response);
     }
 
 }
