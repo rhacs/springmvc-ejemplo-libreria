@@ -1,10 +1,10 @@
 package io.github.rhacs.libreria.controladores;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.hamcrest.CoreMatchers.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +43,8 @@ class HomeControllerTest {
                 .andExpect(view().name("home"))
                 // Esperar que el modelo tenga un atributo "categorias"
                 .andExpect(model().attributeExists("categorias"))
+                // Esperar que el atributo "categorias" del modelo sea un objeto iterable (List)
+                .andExpect(model().attribute("categorias", isA(Iterable.class)))
                 // Imprimir por consola
                 .andDo(print());
     }
