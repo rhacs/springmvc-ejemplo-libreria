@@ -249,4 +249,17 @@ class CategoriaRestControllerTest {
                 .andDo(print());
     }
 
+    @Test
+    void eliminarRegistroDeberiaLanzarElementoNoExiste() throws Exception {
+        mvc
+                // Realizar petición DELETE a la API
+                .perform(delete("/api/categorias/{id}", 1000))
+                // Esperar que el estado de la respuesta sea 400 (NOT_FOUND)
+                .andExpect(status().isNotFound())
+                // Esperar que la excepción lanzada sea ElementoNoExisteException
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ElementoNoExisteException))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
 }
