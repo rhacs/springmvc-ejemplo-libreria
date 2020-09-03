@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
 import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 
 @ExtendWith(SpringExtension.class)
@@ -205,6 +206,30 @@ class CategoriaRestControllerTest {
                 // Esperar que el json de respuesta tenga un objeto "error" con un atributo
                 // "message" que tiene el valor "El nombre está en uso"
                 .andExpect(jsonPath("$.error.message").value("El nombre está en uso"))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    @Test
+    void editarRegistroDeberíaLanzarInconsistenciaParametros() throws Exception {
+        // Nueva información
+        String json = "{\"id\":21,\"nombre\":\"Cuentazos\"}";
+
+        mvc
+                // Realizar petición PUT a la API
+                .perform(put("/api/categorias/{id}", 1)
+                        // Establecer tipo de contenido
+                        .contentType(MediaType.APPLICATION_JSON)
+                        // Establecer contenido
+                        .content(json))
+                // Esperar que el estado de la respuesta sea 400 (BAD_REQUEST)
+                .andExpect(status().isBadRequest())
+                // Esperar que la excepción lanzada sea InconsistenciaParametrosException
+                .andExpect(result -> assertTrue(
+                        result.getResolvedException() instanceof InconsistenciaParametrosException))
+                // Esperar que el json de respuesta tenga un objeto "error" con el atributo
+                // "message" que contiene el valor "Los identificadores no coinciden"
+                .andExpect(jsonPath("$.error.message").value("Los identificadores no coinciden"))
                 // Imprimir por consola
                 .andDo(print());
     }
