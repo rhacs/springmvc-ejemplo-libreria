@@ -3,6 +3,9 @@ package io.github.rhacs.libreria.api;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import javax.transaction.Transactional;
+
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -89,6 +92,62 @@ class PublicadoresRestControllerTest {
                 .andExpect(status().isNotFound())
                 // Esperar que la excepción lanzada sea ElementoNoExisteException
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ElementoNoExisteException))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    // agregarRegistro()
+    // -----------------------------------------------------------------------------------------
+
+    @Test
+    @Transactional
+    void agregarRegistroDeberiaSerExitoso() throws Exception {
+        // Nuevo Publicador
+        String json = "{\"nombre\":\"Publicador de prueba\"}";
+
+        mvc
+                // Preparar petición
+                .perform(
+                        // Realizar petición POST a la API
+                        post(API_PUBLICADORES)
+                                // Establecer tipo de contenido de la solicitud
+                                .contentType(MediaType.APPLICATION_JSON)
+                                // Establecer contenido de la solicitud
+                                .content(json))
+                // Esperar que el estado de la respuesta sea 201 (CREATED)
+                .andExpect(status().isCreated())
+                // Esperar que el tipo de contenido de la respuesta sea "application/json"
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // Esperar que el json devuelto tenga un atributo "id"
+                .andExpect(jsonPath("$.id").exists())
+                // Esperar que el json devuelto tenga un atributo "nombre" con el valor
+                // "Publicador de prueba"
+                .andExpect(jsonPath("$.nombre").value("Publicador de prueba"))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    @Test
+    void agregarRegistroDeberiaLanzarViolacionRestriccionUnica() throws Exception {
+        // Nuevo Publicador
+        String json = "{\"nombre\":\"Impedimenta\"}";
+
+        mvc
+                // Preparar petición
+                .perform(
+                        // Realizar petición POST
+                        post(API_PUBLICADORES)
+                                // Tipo de contenido
+                                .contentType(MediaType.APPLICATION_JSON)
+                                // Contenido
+                                .content(json))
+                // Esperar que el estado de la respuesta sea 209 (CONFLICT)
+                .andExpect(status().isConflict())
+                // Esperar que el tipo de contenido sea "application/json"
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // Esperar que el json tenga un objeto "error" con un atributo "message" que
+                // tiene el valor "El nombre está en uso"
+                .andExpect(jsonPath("$.error.message").value("El nombre está en uso"))
                 // Imprimir por consola
                 .andDo(print());
     }
