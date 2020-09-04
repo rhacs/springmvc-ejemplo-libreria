@@ -32,6 +32,14 @@ import io.github.rhacs.libreria.repositorios.PublicadoresRepositorio;
 @RequestMapping(path = "/api/publicadores", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PublicadoresRestController {
 
+    // Constantes
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Nombre del objeto que se utilizará para los errores
+     */
+    private static final String NOMBRE_OBJETO = Publicador.class.getSimpleName();
+
     // Atributos
     // -----------------------------------------------------------------------------------------
 
@@ -103,9 +111,8 @@ public class PublicadoresRestController {
         // Verificar si existe
         if (existente.isPresent()) {
             // Preparar error
-            HttpStatus status = HttpStatus.CONFLICT;
-            ErrorResponse response = new ErrorResponse(status.value(), "El nombre está en uso");
-            response.agregarError("nombre", "El nombre está en uso", "Publicador", publicador.getNombre());
+            ErrorResponse response = Metodos.prepararError("nombre", "El nombre está en uso", NOMBRE_OBJETO,
+                    publicador.getNombre(), HttpStatus.CONFLICT);
 
             // Lanzar excepción
             throw new ViolacionRestriccionUnicaException(response);
@@ -138,8 +145,8 @@ public class PublicadoresRestController {
         // Verificar si los identificadores no coinciden
         if (!id.equals(publicador.getId())) {
             // Preparar error
-            ErrorResponse response = Metodos.prepararError("id", "Los identificadores no coinciden",
-                    Publicador.class.getSimpleName(), new Object[] { id, publicador.getId() }, HttpStatus.BAD_REQUEST);
+            ErrorResponse response = Metodos.prepararError("id", "Los identificadores no coinciden", NOMBRE_OBJETO,
+                    new Object[] { id, publicador.getId() }, HttpStatus.BAD_REQUEST);
 
             // Lanzar excepción
             throw new InconsistenciaParametrosException(response);
@@ -151,8 +158,8 @@ public class PublicadoresRestController {
         // Verificar si existe y el identificador sea distinto
         if (existente.isPresent() && !id.equals(existente.get().getId())) {
             // Preparar error
-            ErrorResponse response = Metodos.prepararError("nombre", "El nombre está en uso",
-                    Publicador.class.getSimpleName(), publicador.getNombre(), HttpStatus.CONFLICT);
+            ErrorResponse response = Metodos.prepararError("nombre", "El nombre está en uso", NOMBRE_OBJETO,
+                    publicador.getNombre(), HttpStatus.CONFLICT);
 
             // Lanzar excepción
             throw new ViolacionRestriccionUnicaException(response);
