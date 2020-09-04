@@ -3,6 +3,8 @@ package io.github.rhacs.libreria.api;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -11,11 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 import io.github.rhacs.libreria.modelos.ErrorResponse;
 import io.github.rhacs.libreria.modelos.Publicador;
 import io.github.rhacs.libreria.repositorios.PublicadoresRepositorio;
@@ -74,6 +78,40 @@ public class PublicadoresRestController {
 
         // Lanzar excepción
         throw new ElementoNoExisteException(response);
+    }
+
+    // Solicitudes POST
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Agrega un nuevo {@link Publicador} al repositorio
+     * 
+     * @param publicador objeto {@link Publicador} que contiene la información a
+     *                   agregar
+     * @return un objeto {@link Publicador} que contiene la respuesta a la solicitud
+     */
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public Publicador agregarRegistro(@RequestBody @Valid Publicador publicador) {
+        // Buscar información de un publicador existente por el nombre ingresado
+        Optional<Publicador> existente = publicadoresRepositorio.findByNombre(publicador.getNombre());
+
+        // Verificar si existe
+        if (existente.isPresent()) {
+            // Preparar error
+            HttpStatus status = HttpStatus.CONFLICT;
+            ErrorResponse response = new ErrorResponse(status.value(), "El nombre está en uso");
+            response.agregarError("nombre", "El nombre está en uso", "Publicador", publicador.getNombre());
+
+            // Lanzar excepción
+            throw new ViolacionRestriccionUnicaException(response);
+        }
+
+        // Agregar registro al repositorio
+        publicador = publicadoresRepositorio.save(publicador);
+
+        // Devolver objeto
+        return publicador;
     }
 
 }
