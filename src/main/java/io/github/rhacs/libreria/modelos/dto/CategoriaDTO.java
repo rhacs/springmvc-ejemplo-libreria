@@ -5,6 +5,11 @@ import java.util.Objects;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
+/**
+ * Data Transfer Object (DTO) para la entidad {@link Categoria}
+ * 
+ * @author Ricardo
+ */
 public class CategoriaDTO {
 
     // Atributos
