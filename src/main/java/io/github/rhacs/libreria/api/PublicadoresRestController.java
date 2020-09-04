@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.rhacs.libreria.Constantes;
 import io.github.rhacs.libreria.Metodos;
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
 import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
@@ -84,9 +85,8 @@ public class PublicadoresRestController {
         }
 
         // Preparar respuesta de error
-        HttpStatus status = HttpStatus.NOT_FOUND;
-        ErrorResponse response = new ErrorResponse(status.value(), "El elemento no existe");
-        response.agregarError("id", response.getMessage(), "Publicador", id);
+        ErrorResponse response = Metodos.prepararError("id", Constantes.ERROR_NOEXISTE, NOMBRE_OBJETO, id,
+                HttpStatus.NOT_FOUND);
 
         // Lanzar excepción
         throw new ElementoNoExisteException(response);
@@ -111,7 +111,7 @@ public class PublicadoresRestController {
         // Verificar si existe
         if (existente.isPresent()) {
             // Preparar error
-            ErrorResponse response = Metodos.prepararError("nombre", "El nombre está en uso", NOMBRE_OBJETO,
+            ErrorResponse response = Metodos.prepararError("nombre", Constantes.ERROR_ENUSO, NOMBRE_OBJETO,
                     publicador.getNombre(), HttpStatus.CONFLICT);
 
             // Lanzar excepción
@@ -145,7 +145,7 @@ public class PublicadoresRestController {
         // Verificar si los identificadores no coinciden
         if (!id.equals(publicador.getId())) {
             // Preparar error
-            ErrorResponse response = Metodos.prepararError("id", "Los identificadores no coinciden", NOMBRE_OBJETO,
+            ErrorResponse response = Metodos.prepararError("id", Constantes.ERROR_INCONSISTENCIA, NOMBRE_OBJETO,
                     new Object[] { id, publicador.getId() }, HttpStatus.BAD_REQUEST);
 
             // Lanzar excepción
@@ -158,7 +158,7 @@ public class PublicadoresRestController {
         // Verificar si existe y el identificador sea distinto
         if (existente.isPresent() && !id.equals(existente.get().getId())) {
             // Preparar error
-            ErrorResponse response = Metodos.prepararError("nombre", "El nombre está en uso", NOMBRE_OBJETO,
+            ErrorResponse response = Metodos.prepararError("nombre", Constantes.ERROR_ENUSO, NOMBRE_OBJETO,
                     publicador.getNombre(), HttpStatus.CONFLICT);
 
             // Lanzar excepción
