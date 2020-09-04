@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.github.rhacs.libreria.Constantes;
 import io.github.rhacs.libreria.Metodos;
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
 import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
@@ -32,6 +33,14 @@ import io.github.rhacs.libreria.repositorios.CategoriasRepositorio;
 @RestController
 @RequestMapping(path = "/api/categorias", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CategoriaRestController {
+
+    // Constantes
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Nombre del objeto que se utilizará en los errores
+     */
+    private static final String NOMBRE_OBJETO = Categoria.class.getSimpleName();
 
     // Atributos
     // -----------------------------------------------------------------------------------------
@@ -77,8 +86,8 @@ public class CategoriaRestController {
         }
 
         // Preparar respuesta
-        ErrorResponse response = Metodos.prepararError("id", "El elemento no existe", Categoria.class.getSimpleName(),
-                id, HttpStatus.NOT_FOUND);
+        ErrorResponse response = Metodos.prepararError("id", Constantes.ERROR_NOEXISTE, NOMBRE_OBJETO, id,
+                HttpStatus.NOT_FOUND);
 
         // Lanzar excepción
         throw new ElementoNoExisteException(response);
@@ -103,8 +112,8 @@ public class CategoriaRestController {
         // Verificar si existe
         if (existente.isPresent()) {
             // Preparar respuesta
-            ErrorResponse response = Metodos.prepararError("nombre", "El nombre está en uso",
-                    Categoria.class.getSimpleName(), categoria.getNombre(), HttpStatus.CONFLICT);
+            ErrorResponse response = Metodos.prepararError("nombre", Constantes.ERROR_ENUSO, NOMBRE_OBJETO,
+                    categoria.getNombre(), HttpStatus.CONFLICT);
 
             // Lanzar excepción
             throw new ViolacionRestriccionUnicaException(response);
@@ -142,8 +151,8 @@ public class CategoriaRestController {
             // Verificar si existe y si los identificadores son distintos
             if (existente.isPresent() && !existente.get().getId().equals(categoria.getId())) {
                 // Preparar respuesta
-                ErrorResponse response = Metodos.prepararError("nombre", "El nombre está en uso",
-                        Categoria.class.getSimpleName(), categoria.getNombre(), HttpStatus.CONFLICT);
+                ErrorResponse response = Metodos.prepararError("nombre", Constantes.ERROR_ENUSO, NOMBRE_OBJETO,
+                        categoria.getNombre(), HttpStatus.CONFLICT);
 
                 // Lanzar excepción
                 throw new ViolacionRestriccionUnicaException(response);
@@ -160,8 +169,8 @@ public class CategoriaRestController {
         }
 
         // Preparar respuesta
-        ErrorResponse response = Metodos.prepararError("id", "Los identificadores no coinciden",
-                Categoria.class.getSimpleName(), new Object[] { id, categoria.getId() }, HttpStatus.BAD_REQUEST);
+        ErrorResponse response = Metodos.prepararError("id", Constantes.ERROR_INCONSISTENCIA, NOMBRE_OBJETO,
+                new Object[] { id, categoria.getId() }, HttpStatus.BAD_REQUEST);
 
         // Lanzar excepción
         throw new InconsistenciaParametrosException(response);
@@ -187,8 +196,8 @@ public class CategoriaRestController {
             categoriasRepositorio.delete(categoria.get());
         } else {
             // Preparar respuesta
-            ErrorResponse response = Metodos.prepararError("id", "La Categoría solicitada no existe",
-                    Categoria.class.getSimpleName(), id, HttpStatus.NOT_FOUND);
+            ErrorResponse response = Metodos.prepararError("id", Constantes.ERROR_NOEXISTE, NOMBRE_OBJETO, id,
+                    HttpStatus.NOT_FOUND);
 
             // Lanzar excepcion
             throw new ElementoNoExisteException(response);

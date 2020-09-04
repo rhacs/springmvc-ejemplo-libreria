@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import io.github.rhacs.libreria.Constantes;
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
 import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
 import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
@@ -94,8 +95,8 @@ class CategoriaRestControllerTest {
                 // Esperar que la excepción lanzada sea ElementoNoExisteException
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ElementoNoExisteException))
                 // Experar que el json contenga un objeto "error" con un atributo "mensaje" que
-                // tiene el valor "El elemento no existe"
-                .andExpect(jsonPath("$.error.message").value("El elemento no existe"))
+                // tiene el valor Constantes.ERROR_NOEXISTE
+                .andExpect(jsonPath("$.error.message").value(Constantes.ERROR_NOEXISTE))
                 // Imprimir resultado por consola
                 .andDo(print());
     }
@@ -125,7 +126,9 @@ class CategoriaRestControllerTest {
                 .andExpect(jsonPath("$.id").exists())
                 // Esperar que el json contenga un atributo "nombre" con el valor "Prueba desde
                 // JUnit"
-                .andExpect(jsonPath("$.nombre").value("Prueba desde JUnit"));
+                .andExpect(jsonPath("$.nombre").value("Prueba desde JUnit"))
+                // Imprimir por consola
+                .andDo(print());
     }
 
     @Test
@@ -143,8 +146,8 @@ class CategoriaRestControllerTest {
                 // Esperar que el estado de la respuesta sea 409 (CONFLICT)
                 .andExpect(status().isConflict())
                 // Esperar que el json tenga un objeto "error" con el atributo "message" y que
-                // su valor sea "El nombre está en uso"
-                .andExpect(jsonPath("$.error.message").value("El nombre está en uso"))
+                // su valor sea Constantes.ERROR_ENUSO
+                .andExpect(jsonPath("$.error.message").value(Constantes.ERROR_ENUSO))
                 // Esperar que la excepción lanzada sea ViolacionRestriccionUnicaException
                 .andExpect(result -> assertTrue(
                         result.getResolvedException() instanceof ViolacionRestriccionUnicaException))
@@ -207,8 +210,8 @@ class CategoriaRestControllerTest {
                 .andExpect(result -> assertTrue(
                         result.getResolvedException() instanceof ViolacionRestriccionUnicaException))
                 // Esperar que el json de respuesta tenga un objeto "error" con un atributo
-                // "message" que tiene el valor "El nombre está en uso"
-                .andExpect(jsonPath("$.error.message").value("El nombre está en uso"))
+                // "message" que tiene el valor Constantes.ERROR_ENUSO
+                .andExpect(jsonPath("$.error.message").value(Constantes.ERROR_ENUSO))
                 // Imprimir por consola
                 .andDo(print());
     }
@@ -231,8 +234,8 @@ class CategoriaRestControllerTest {
                 .andExpect(result -> assertTrue(
                         result.getResolvedException() instanceof InconsistenciaParametrosException))
                 // Esperar que el json de respuesta tenga un objeto "error" con el atributo
-                // "message" que contiene el valor "Los identificadores no coinciden"
-                .andExpect(jsonPath("$.error.message").value("Los identificadores no coinciden"))
+                // "message" que contiene el valor Constantes.ERROR_INCONSISTENCIA
+                .andExpect(jsonPath("$.error.message").value(Constantes.ERROR_INCONSISTENCIA))
                 // Imprimir por consola
                 .andDo(print());
     }
