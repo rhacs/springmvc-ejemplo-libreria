@@ -19,7 +19,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import io.github.rhacs.libreria.Constantes;
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
+import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/appServlet-context.xml",
@@ -146,8 +149,90 @@ class PublicadoresRestControllerTest {
                 // Esperar que el tipo de contenido sea "application/json"
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 // Esperar que el json tenga un objeto "error" con un atributo "message" que
-                // tiene el valor "El nombre está en uso"
-                .andExpect(jsonPath("$.error.message").value("El nombre está en uso"))
+                // tiene el valor Constantes.ERROR_ENUSO
+                .andExpect(jsonPath("$.error.message").value(Constantes.ERROR_ENUSO))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    // editarRegistro()
+    // -----------------------------------------------------------------------------------------
+
+    @Test
+    @Transactional
+    void editarRegistroDeberiaSerExitoso() throws Exception {
+        // Nueva información
+        String json = "{\"id\":1,\"nombre\":\"Editorial LeoPoco\"}";
+
+        mvc
+                // Preparar petición
+                .perform(
+                        // Realizar petición PUT
+                        put(API_PUBLICADORES_ID, 1)
+                                // Establecer tipo de contenido
+                                .contentType(MediaType.APPLICATION_JSON)
+                                // Establecer contenido
+                                .content(json))
+                // Esperar que el estado de la respuesta sea OK (200)
+                .andExpect(status().isOk())
+                // Esperar que el tipo de contenido de la respuesta sea "application/json"
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // Esperar que el json devuelto tenga un atributo "id" con el valor "1"
+                .andExpect(jsonPath("$.id").value(1))
+                // Esperar que el json devuelto tenga un atributo "nombre" con el valor
+                // "Editorial LeoPoco"
+                .andExpect(jsonPath("$.nombre").value("Editorial LeoPoco"))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    @Test
+    void editarRegistroDeberiaLanzarInconsistenciaParametros() throws Exception {
+        // Nueva información
+        String json = "{\"id\":11,\"nombre\":\"Prueba de inconsistencia\"}";
+
+        mvc
+                // Preparar petición
+                .perform(
+                        // Realizar petición PUT
+                        put(API_PUBLICADORES_ID, 2)
+                                // Establecer tipo de contenido
+                                .contentType(MediaType.APPLICATION_JSON)
+                                // Establecer contenido
+                                .content(json))
+                // Esperar que el estado de la respuesta sea 400 (BAD_REQUEST)
+                .andExpect(status().isBadRequest())
+                // Esperar que el tipo de contenido de la respuesta sea "application/json"
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // Esperar que el json devuelto tenga un objeto "error" con un atributo
+                // "message" que tiene el valor Constantes.ERROR_INCONSISTENCIA
+                .andExpect(jsonPath("$.error.message").value(Constantes.ERROR_INCONSISTENCIA))
+                // Esperar que la excepción lanzada sea InconsistenciaParametrosException
+                .andExpect(result -> assertTrue(
+                        result.getResolvedException() instanceof InconsistenciaParametrosException))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    @Test
+    void editarRegistroDeberiaLanzarViolacionRestriccionUnica() throws Exception {
+        // Nueva información
+        String json = "{\"id\":1,\"nombre\":\"Querous\"}";
+
+        mvc
+                // Preparar petición
+                .perform(
+                        // Realizar petición PUT
+                        put(API_PUBLICADORES_ID, 1)
+                                // Establecer tipo de contenido
+                                .contentType(MediaType.APPLICATION_JSON)
+                                // Establecer contenido
+                                .content(json))
+                // Esperar que el estado de la respuesta sea 409 (CONFLICT)
+                .andExpect(status().isConflict())
+                // Esperar que la excepción lanzada sea ViolacionRestriccionUnicaException
+                .andExpect(result -> assertTrue(
+                        result.getResolvedException() instanceof ViolacionRestriccionUnicaException))
                 // Imprimir por consola
                 .andDo(print());
     }
