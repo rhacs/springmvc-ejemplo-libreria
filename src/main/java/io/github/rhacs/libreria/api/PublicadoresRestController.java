@@ -22,6 +22,7 @@ import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
 import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
 import io.github.rhacs.libreria.modelos.ErrorResponse;
 import io.github.rhacs.libreria.modelos.Publicador;
+import io.github.rhacs.libreria.modelos.dto.PublicadorDTO;
 import io.github.rhacs.libreria.repositorios.PublicadoresRepositorio;
 
 @RestController
@@ -92,7 +93,7 @@ public class PublicadoresRestController {
      */
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Publicador agregarRegistro(@RequestBody @Valid Publicador publicador) {
+    public Publicador agregarRegistro(@RequestBody @Valid PublicadorDTO publicador) {
         // Buscar información de un publicador existente por el nombre ingresado
         Optional<Publicador> existente = publicadoresRepositorio.findByNombre(publicador.getNombre());
 
@@ -107,11 +108,14 @@ public class PublicadoresRestController {
             throw new ViolacionRestriccionUnicaException(response);
         }
 
+        // Convertir DTO a Entidad
+        Publicador pub = new Publicador(publicador.getNombre());
+
         // Agregar registro al repositorio
-        publicador = publicadoresRepositorio.save(publicador);
+        pub = publicadoresRepositorio.save(pub);
 
         // Devolver objeto
-        return publicador;
+        return pub;
     }
 
 }
