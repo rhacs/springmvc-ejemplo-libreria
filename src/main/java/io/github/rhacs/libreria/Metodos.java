@@ -29,4 +29,11 @@ public class Metodos {
         return respuesta;
     }
 
+    // Constructores
+    // -----------------------------------------------------------------------------------------
+
+    private Metodos() {
+        // Constructor declarado privado para esconder el constructor público implícito
+    }
+
 }
