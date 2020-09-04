@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -173,6 +174,34 @@ public class PublicadoresRestController {
 
         // Devolver objeto con los cambios realizados
         return pub;
+    }
+
+    // Solicitudes DELETE
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Elimina un registro del repositorio
+     * 
+     * @param id identificador numérico del {@link Publicador}
+     */
+    @DeleteMapping(path = "/{id:^[0-9]+$}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void eliminarRegistro(@PathVariable Long id) {
+        // Buscar información del Publicador solicitado
+        Optional<Publicador> publicador = publicadoresRepositorio.findById(id);
+
+        // Verificar si existe
+        if (publicador.isPresent()) {
+            // Eliminar registro del repositorio
+            publicadoresRepositorio.delete(publicador.get());
+        } else {
+            // Preparar error
+            ErrorResponse response = Metodos.prepararError("id", Constantes.ERROR_NOEXISTE, NOMBRE_OBJETO, id,
+                    HttpStatus.NOT_FOUND);
+
+            // Lanzar excepción
+            throw new ElementoNoExisteException(response);
+        }
     }
 
 }
