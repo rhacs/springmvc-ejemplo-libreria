@@ -59,27 +59,6 @@ public class CategoriaDTO {
     // -----------------------------------------------------------------------------------------
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, nombre);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-
-        if (obj == null)
-            return false;
-
-        if (getClass() != obj.getClass())
-            return false;
-
-        CategoriaDTO other = (CategoriaDTO) obj;
-
-        return Objects.equals(id, other.id) || Objects.equals(nombre, other.nombre);
-    }
-
-    @Override
     public String toString() {
         return String.format("CategoriaDTO [id=%s, nombre=%s]", id, nombre);
     }
