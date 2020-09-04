@@ -1,5 +1,9 @@
 package io.github.rhacs.libreria;
 
+import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
+import io.github.rhacs.libreria.excepciones.InconsistenciaParametrosException;
+import io.github.rhacs.libreria.excepciones.ViolacionRestriccionUnicaException;
+
 public class Constantes {
 
     // Tablas
@@ -102,6 +106,33 @@ public class Constantes {
      * Nombre de la columna que almacena la fecha de publicación del {@link Libro}
      */
     public static final String LIBROS_FECHA_PUBLICACION = "fecha_publicacion";
+
+    // Mensajes de Error
+    // -----------------------------------------------------------------------------------------
+
+    /**
+     * Mensaje de error mostrado cuando el valor de un atributo está siendo
+     * utilizado por otro registro.
+     * 
+     * @see ViolacionRestriccionUnicaException
+     */
+    public static final String ERROR_ENUSO = "El valor está siendo utilizado por otro registro en el repositorio";
+
+    /**
+     * Mensaje de error que se muestra cuando el cliente solicita el detalle de un
+     * registro que no existe en el repositorio
+     * 
+     * @see ElementoNoExisteException
+     */
+    public static final String ERROR_NOEXISTE = "El registro solicitado no existe en el sistema";
+
+    /**
+     * Mensaje de error que se muestra cuando hay una inconsistencia de valores de
+     * parámetros
+     * 
+     * @see InconsistenciaParametrosException
+     */
+    public static final String ERROR_INCONSISTENCIA = "Los valores no coinciden";
 
     // Constructores
     // -----------------------------------------------------------------------------------------
