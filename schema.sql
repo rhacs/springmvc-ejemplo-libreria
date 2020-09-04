@@ -33,7 +33,7 @@ CREATE TABLE lib_publicadores (
 );
 
 -- Secuencia
-CREATE SEQUENCE lib_publicadores_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
+CREATE SEQUENCE lib_publicadores_seq START WITH 19 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
 
 ----------------------------------------------------------------------------------------------------
 -- Tabla: lib_categorias
