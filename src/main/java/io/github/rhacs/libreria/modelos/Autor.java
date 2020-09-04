@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 
 import io.github.rhacs.libreria.Constantes;
 
@@ -33,22 +31,16 @@ public class Autor {
     /**
      * Nombre del {@link Autor}
      */
-    @NotEmpty
-    @Size(max = 50)
     private String nombre;
 
     /**
      * Apellido del {@link Autor}
      */
-    @NotEmpty
-    @Size(max = 50)
     private String apellido;
 
     /**
      * Nacionalidad del {@link Autor}
      */
-    @NotEmpty
-    @Size(max = 100)
     private String nacionalidad;
 
     // Constructores
