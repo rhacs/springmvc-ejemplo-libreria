@@ -206,4 +206,43 @@ class AutoresRestControllerTest {
                 .andDo(print());
     }
 
+    // eliminarRegistro()
+    // -----------------------------------------------------------------------------------------
+
+    @Test
+    @Transactional
+    void eliminarRegistroDeberiaSerExitoso() throws Exception {
+        // Identificador numérico del autor
+        Long id = 2L;
+
+        mvc
+                // Realizar petición DELETE a la API
+                .perform(delete(API_AUTORES_ID, id))
+                // Esperar que el estado de la respuesta sea 204 (NO_CONTENT)
+                .andExpect(status().isNoContent())
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    @Test
+    void eliminarRegistroDeberiaLanzarElementoNoExiste() throws Exception {
+        // Identificador numérico del Autor
+        Long id = 100000L;
+
+        mvc
+                // Realizar petición DELETE a la API
+                .perform(delete(API_AUTORES_ID, id))
+                // Esperar que el estado de la respuesta sea 404 (NOT_FOUND)
+                .andExpect(status().isNotFound())
+                // Esperar que el tipo de contenido de la respuesta sea "application/json"
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // Esperar que la excepción lanzada sea ElementoNoExisteException
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ElementoNoExisteException))
+                // Esperar que el json devuelto tenga un objeto "error" con un atributo
+                // "message" que contenga el valor Constantes.ERROR_NOEXISTE
+                .andExpect(jsonPath("$.error.message").value(Constantes.ERROR_NOEXISTE))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
 }
