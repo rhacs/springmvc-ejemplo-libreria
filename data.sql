@@ -44,3 +44,13 @@ INSERT INTO lib_publicadores VALUES (15, 'Siruela Policiaca');
 INSERT INTO lib_publicadores VALUES (16, 'Plaza Janés');
 INSERT INTO lib_publicadores VALUES (17, 'Caballo de Troya');
 INSERT INTO lib_publicadores VALUES (18, 'Seix Barral');
+
+-- Tabla: lib_autores
+INSERT INTO lib_autores VALUES (1, 'Howard', 'Phillips Lovecraft', 'Estadounidense');
+INSERT INTO lib_autores VALUES (2, 'Stieg', 'Larsson', 'Sueca');
+INSERT INTO lib_autores VALUES (3, 'Edgar Allan', 'Poe', 'Estadounidense');
+INSERT INTO lib_autores VALUES (4, 'Franz', 'Kafka', 'Checoslovaca');
+INSERT INTO lib_autores VALUES (5, 'Mary', 'Shelley', 'Inglesa');
+INSERT INTO lib_autores VALUES (6, 'Shirley', 'Jackson', 'Estadounidense');
+INSERT INTO lib_autores VALUES (7, 'Anne', 'Rice', 'Estadounidense');
+INSERT INTO lib_autores VALUES (8, 'Charlotte', 'Brontë', 'Británica');
