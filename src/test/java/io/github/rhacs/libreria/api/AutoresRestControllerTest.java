@@ -6,6 +6,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +22,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.github.rhacs.libreria.excepciones.ElementoNoExisteException;
 
@@ -88,6 +95,44 @@ class AutoresRestControllerTest {
                 .andExpect(status().isNotFound())
                 // Esperar que la excepción lanzada sea ElementoNoExisteException
                 .andExpect(result -> assertTrue(result.getResolvedException() instanceof ElementoNoExisteException))
+                // Imprimir por consola
+                .andDo(print());
+    }
+
+    // agregarRegistro()
+    // -----------------------------------------------------------------------------------------
+
+    @Test
+    @Transactional
+    void agregarRegistroDeberiaSerExitoso() throws Exception {
+        // Crear nuevo objeto
+        Map<String, Object> payload = new HashMap<>();
+
+        // Agregar valores
+        payload.put("nombre", "Nombre");
+        payload.put("apellido", "Apellido");
+        payload.put("nacionalidad", "Nacionalidad");
+
+        // Convertir a json
+        String json = new ObjectMapper().writeValueAsString(payload);
+
+        mvc
+                // Realizar petición POST a la API
+                .perform(post(API_AUTORES)
+                        // Establecer tipo de contenido
+                        .contentType(MediaType.APPLICATION_JSON)
+                        // Establecer contenido
+                        .content(json))
+                // Esperar que el estado de la respuesta sea 201 (CREATED)
+                .andExpect(status().isCreated())
+                // Esperar que el tipo de contenido de la respuesta sea "application/json"
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // Esperar que el json devuelto tenga un atributo "id"
+                .andExpect(jsonPath("$.id").exists())
+                // Esperar que el json devuelto tenga un atributo "nombreCompleto" con el valor
+                // "Nombre Apellido"
+                .andExpect(jsonPath("$.nombreCompleto")
+                        .value(String.format("%s %s", payload.get("nombre"), payload.get("apellido"))))
                 // Imprimir por consola
                 .andDo(print());
     }
