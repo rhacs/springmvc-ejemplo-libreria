@@ -14,7 +14,7 @@ CREATE TABLE lib_autores (
 );
 
 -- Secuencia
-CREATE SEQUENCE lib_autores_seq START WITH 1 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
+CREATE SEQUENCE lib_autores_seq START WITH 9 INCREMENT BY 1 NOCACHE NOCYCLE ORDER;
 
 ----------------------------------------------------------------------------------------------------
 -- Tabla: lib_publicadores
